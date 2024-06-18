@@ -1,0 +1,47 @@
+html {
+    height: 100%;
+}
+
+body {
+    font-family: monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    min-width: 400px;
+    margin: 0;
+}
+
+button {
+    flex-basis: 25%;
+    font-size: 33px;
+    padding: 10px;
+}
+
+#calculator-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-basis: 100%;
+    gap: 2px;
+    border: 5px solid black;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 300px;
+    max-height: 400px;
+}
+
+.top-row {
+    height: 100px;
+    margin-bottom: 15px;
+}
+
+.button-row {
+    display: flex;
+    gap: 2px;
+}
+
+#display {
+    font-variant-numeric: tabular-nums;
+    font-size: 55px;
+}
