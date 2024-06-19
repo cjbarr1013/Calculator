@@ -57,7 +57,7 @@ backspace.addEventListener("click", () => {
         currentNum = tempArr.join('');
 
         if (currentNum === '') display.textContent = 0;
-        else display.textContent = currentNum;
+        else display.textContent = fitToDisplay(currentNum);
     }
 });
 
@@ -73,8 +73,11 @@ plusMinus.addEventListener("click", () => {
     } else {
         currentNum = currentNum.slice(1);
     }
-    display.textContent = currentNum;
+    display.textContent = fitToDisplay(currentNum);
 });
+
+/* Keyboard support */
+
 
 /* Functions */
 function inputValue(item) {
@@ -83,22 +86,31 @@ function inputValue(item) {
         equalClicked = false;
     }
     currentNum += item.textContent;
-    display.textContent = currentNum;
+    display.textContent = fitToDisplay(currentNum);
 };
 
 function evaluate() {
     num2 = currentNum;
     num1 = operate(Number(num1), Number(num2), oper);
-    let decimals = countDecimals(num1);
-    if (decimals > 7) decimals = 7;
-    display.textContent = num1.toFixed(decimals);
+    display.textContent = fitToDisplay(num1);
 };
 
-function countDecimals(num) {
-    const count = num.toString().split('.')[1];
-    if (count === undefined) return 0;
-    else return count.length;
-};
+function fitToDisplay(num) {
+    let tempStr = '';
+    if (num.toString().includes('e')) {
+        tempStr = num.toLocaleString('fullwide', {useGrouping:false});
+    } else {
+        tempStr = num.toString();
+    }
+
+    if ((tempStr.length <= 9) || (tempStr.split('.')[0].length < 8)) {
+        return tempStr.slice(0, 9);
+    } 
+    else {
+        tempStr = parseFloat(num).toExponential();
+        return parseFloat(num).toExponential(5 - tempStr.split('+')[1].length);
+    }
+}
 
 function displayError() {
     display.textContent = 'ERROR';
