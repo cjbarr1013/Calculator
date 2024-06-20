@@ -1,3 +1,8 @@
+/* 
+Add keyboard support
+Make it look nice
+*/
+
 let currentNum = num1 = num2 = oper = '';
 let equalClicked = false;
 const display = document.querySelector("#display");
@@ -11,7 +16,7 @@ valueButtons.forEach((item) => {
 });
 
 /* Clear button */
-const clear = document.querySelector(".clear");
+const clear = document.querySelector("#clear");
 clear.addEventListener("click", () => {
     currentNum = num1 = num2 = oper = '';
     equalClicked = false;
@@ -32,7 +37,7 @@ operatorButtons.forEach((item) => {
 });
 
 /* Equal button */
-const equal = document.querySelector(".equal");
+const equal = document.querySelector("#equal");
 equal.addEventListener("click", () => {
     if (num1 !== '') {
         evaluate();
@@ -41,7 +46,7 @@ equal.addEventListener("click", () => {
 });
 
 /* Decimal button */
-const decimal = document.querySelector(".decimal");
+const decimal = document.querySelector("#decimal");
 decimal.addEventListener("click", () => {
     if (!currentNum.includes('.')) {
         inputValue(decimal);
@@ -49,7 +54,7 @@ decimal.addEventListener("click", () => {
 });
 
 /* Backspace button */
-const backspace = document.querySelector(".backspace");
+const backspace = document.querySelector("#backspace");
 backspace.addEventListener("click", () => {
     if (currentNum !== '' && !equalClicked) {
         tempArr = currentNum.split('');
@@ -62,7 +67,7 @@ backspace.addEventListener("click", () => {
 });
 
 /* Plus/minus button */
-const plusMinus = document.querySelector(".plus-minus");
+const plusMinus = document.querySelector("#plus-minus");
 plusMinus.addEventListener("click", () => {
     if (equalClicked) {
         currentNum = num1 = num2 = oper = '';
@@ -77,7 +82,10 @@ plusMinus.addEventListener("click", () => {
 });
 
 /* Keyboard support */
-
+document.addEventListener("keypress", (event) => {
+    const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+    if (nums.includes(Number(event.key))) inputValue(event.key);
+});
 
 /* Functions */
 function inputValue(item) {
@@ -85,7 +93,10 @@ function inputValue(item) {
         currentNum = num1 = num2 = oper = '';
         equalClicked = false;
     }
-    currentNum += item.textContent;
+
+    if (item.textContent === undefined) currentNum += item;
+    else currentNum += item.textContent;
+
     display.textContent = fitToDisplay(currentNum);
 };
 
@@ -108,7 +119,11 @@ function fitToDisplay(num) {
     } 
     else {
         tempStr = parseFloat(num).toExponential();
-        return parseFloat(num).toExponential(5 - tempStr.split('+')[1].length);
+        if (tempStr.charAt(0) === '-') {
+            return parseFloat(num).toExponential(4 - tempStr.split('+')[1].length);
+        } else {
+            return parseFloat(num).toExponential(5 - tempStr.split('+')[1].length);
+        }
     }
 }
 
